@@ -4,6 +4,15 @@
   import { ORIGINAL } from "../original";
   import Guess from "./Guess.svelte";
 
+  let isInputDisabled = false;
+
+  function disableInputForTwoSeconds() {
+    isInputDisabled = true;
+    setTimeout(() => {
+      isInputDisabled = false;
+    }, 1500);
+  }
+
   let currentWord = "";
 
   $: currentColors = Array.from(currentWord.padEnd(5, " ")).map((letter) =>
@@ -52,6 +61,8 @@
     if (currentWord.length == ORIGINAL.wordLength) {
       const response = ORIGINAL.makeGuess(currentWord.toLowerCase());
 
+      disableInputForTwoSeconds();
+
       // TODO: only clear if the guess was valid
       currentWord = "";
 
@@ -66,7 +77,11 @@
   }
 
   function tryAddingLetter(letter: string) {
-    if (/^[A-Z]$/.test(letter) && currentWord.length < ORIGINAL.wordLength) {
+    if (
+      /^[A-Z]$/.test(letter) &&
+      currentWord.length < ORIGINAL.wordLength &&
+      !isInputDisabled
+    ) {
       currentWord += letter;
     }
   }
