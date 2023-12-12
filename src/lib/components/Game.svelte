@@ -102,7 +102,9 @@
   {/each}
 
   <!-- current guess -->
-  <Guess guess={currentGuess} />
+  {#if game.guesses.length != game.maxGuesses}
+    <Guess guess={currentGuess} />
+  {/if}
 
   <!-- empty guesses -->
   {#each Array(Math.max(0, game.maxGuesses - game.guesses.length - 1)) as _}
