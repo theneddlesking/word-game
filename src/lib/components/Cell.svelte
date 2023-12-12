@@ -62,6 +62,18 @@
     animation-delay: calc(var(--flip-delay));
   }
 
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
   @keyframes flipSequence {
     0% {
       transform: scaleY(1);
