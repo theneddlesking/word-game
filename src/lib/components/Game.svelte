@@ -7,7 +7,7 @@
   let currentWord = "";
 
   $: currentColors = Array.from(currentWord.padEnd(5, " ")).map((letter) =>
-    letter === " " ? "empty" : "gray"
+    letter === " " ? "empty" : "white"
   );
 
   $: currentGuess = {
@@ -29,6 +29,8 @@
 
   function handleInvalidGuess(response: GuessResponse) {
     console.log("Invalid guess");
+
+    // TODO: shake the guess
   }
 
   function handleResponse(response: GuessResponse) {
@@ -49,7 +51,10 @@
   function tryEnteringGuess() {
     if (currentWord.length == ORIGINAL.wordLength) {
       const response = ORIGINAL.makeGuess(currentWord.toLowerCase());
+
+      // TODO: only clear if the guess was valid
       currentWord = "";
+
       handleResponse(response);
     }
   }

@@ -12,6 +12,6 @@
 
 <div>
   {#each guess.word as letter, i}
-    <Cell {letter} color={guess.details.colors[i]} />
+    <Cell {letter} color={guess.details.colors[i]} flipDelay={i * 0.25} />
   {/each}
 </div>
