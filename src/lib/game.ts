@@ -7,6 +7,7 @@ export default class Game {
   maxGuesses: number;
   validWords: string[];
   gameWon: boolean;
+  wordLength: number;
   isValidGuess: (guess: string) => boolean;
   getGuessDetails: (guess: string, target: string) => GuessDetails;
 
@@ -24,13 +25,17 @@ export default class Game {
     this.gameWon = false;
     this.getGuessDetails = getGuessDetails;
     this.isValidGuess = isValidGuess;
+
+    this.wordLength = 5;
   }
 
   makeGuess(word: string) {
     if (
       !this.isValidGuess(word) ||
       // already guessed too many times
-      this.getNumberOfGuesses() >= this.maxGuesses
+      this.getNumberOfGuesses() >= this.maxGuesses ||
+      // game already won
+      this.gameWon
     ) {
       return {
         invalidGuess: true,
