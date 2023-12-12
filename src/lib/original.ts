@@ -14,8 +14,6 @@ export const ORIGINAL = new Game("hello", (guess: string, target: string) => {
     return acc;
   }, {} as Record<string, number>);
 
-  console.log(targetLetterCounts);
-
   // check for correct letters in the correct position (green)
   for (let i = 0; i < guess.length; i++) {
     if (guess[i] === target[i]) {
