@@ -1,6 +1,14 @@
 import Guess, { type GuessDetails } from "./guess";
 import { VALID_WORDS } from "./words";
 
+export type GuessResponse = {
+  invalidGuess: boolean;
+  details?: GuessDetails;
+  gameWon: boolean;
+  gameOver: boolean;
+  guess: string;
+};
+
 export default class Game {
   answer: string;
   guesses: Guess[];
@@ -29,7 +37,7 @@ export default class Game {
     this.wordLength = 5;
   }
 
-  makeGuess(word: string) {
+  makeGuess(word: string): GuessResponse {
     if (
       !this.isValidGuess(word) ||
       // already guessed too many times
@@ -41,6 +49,7 @@ export default class Game {
         invalidGuess: true,
         gameWon: this.gameWon,
         gameOver: this.gameWon || this.getNumberOfGuesses() >= this.maxGuesses,
+        guess: word,
       };
     }
 
@@ -55,9 +64,10 @@ export default class Game {
 
     return {
       invalidGuess: false,
-      response,
+      details: response,
       gameWon: this.gameWon,
       gameOver: this.gameWon || this.getNumberOfGuesses() >= this.maxGuesses,
+      guess: word,
     };
   }
 

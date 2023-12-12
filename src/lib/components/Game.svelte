@@ -1,13 +1,41 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import type { GuessResponse } from "../game";
   import { ORIGINAL } from "../original";
 
   let guess = "";
 
+  function handleGameOver(response: GuessResponse) {
+    if (response.gameWon) {
+      alert("You won!");
+    } else {
+      alert("You lost!");
+    }
+  }
+
+  function handleInvalidGuess(response: GuessResponse) {
+    alert("Invalid guess");
+  }
+
+  function handleResponse(response: GuessResponse) {
+    // invalid guess
+    if (response.invalidGuess) {
+      handleInvalidGuess(response);
+      return;
+    }
+
+    // game ends
+    if (response.gameOver) {
+      handleGameOver(response);
+      return;
+    }
+  }
+
   function tryEnteringGuess() {
     if (guess.length == ORIGINAL.wordLength) {
       const response = ORIGINAL.makeGuess(guess.toLowerCase());
-      console.log(response);
+      handleResponse(response);
+
       guess = "";
     }
   }
@@ -42,8 +70,6 @@
   }
 
   $: displayWord = guess.split("").join(" ");
-
-  console.log(ORIGINAL);
 
   // listen for key inputs
   onMount(() => {

@@ -10,5 +10,4 @@ export default class Guess {
 
 export interface GuessDetails {
   colors: string[];
-  guess: string;
 }

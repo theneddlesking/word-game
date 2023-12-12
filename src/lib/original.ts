@@ -33,5 +33,5 @@ export const ORIGINAL = new Game("hello", (guess: string, target: string) => {
     }
   }
 
-  return { colors, guess };
+  return { colors };
 });
