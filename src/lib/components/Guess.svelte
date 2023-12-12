@@ -28,6 +28,12 @@
 </div>
 
 <style>
+  #guess-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .shake {
     animation: shake 0.5s;
   }

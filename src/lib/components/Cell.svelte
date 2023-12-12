@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { WordColors as WordColor } from "../guess";
+  import type { WordColor } from "../guess";
 
   export let letter: string;
   export let color: WordColor;
@@ -12,7 +12,7 @@
       green: "#6aaa64",
       yellow: "#c9b458",
       gray: "#787c7e",
-      empty: "#ffffff",
+      empty: "#787c7e",
       white: "#ffffff",
     };
 
@@ -33,11 +33,11 @@
 <style>
   .cell {
     display: inline-block;
-    width: 2rem;
-    height: 2rem;
+    width: 2em;
+    height: 2em;
     text-align: center;
-    line-height: 2rem;
-    font-size: 1.2rem;
+    line-height: 2em;
+    font-size: 1.2em;
     font-weight: bold;
     margin: 2px;
     font-family: "Arial", sans-serif;

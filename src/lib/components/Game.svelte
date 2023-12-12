@@ -3,6 +3,7 @@
   import type { GuessResponse } from "../game";
   import { ORIGINAL } from "../original";
   import Guess from "./Guess.svelte";
+  import Keyboard from "./Keyboard.svelte";
 
   let isInputDisabled = false;
 
@@ -12,6 +13,9 @@
     isInputDisabled = true;
     setTimeout(() => {
       isInputDisabled = false;
+
+      // only update color map after the guess is made
+      letterColorMap = game.letterColorMap;
     }, delay);
   }
 
@@ -30,6 +34,8 @@
 
   let game = ORIGINAL;
 
+  let letterColorMap = game.letterColorMap;
+
   function handleGameOver(response: GuessResponse) {
     if (response.gameWon) {
       console.log("You won!");
@@ -42,7 +48,7 @@
   function handleInvalidGuess(response: GuessResponse) {
     isShaking = true;
 
-    disableInput(2000);
+    disableInput(750);
 
     if (!timeout) {
       timeout = setTimeout(() => {
@@ -68,8 +74,8 @@
   }
 
   function tryEnteringGuess() {
-    if (currentWord.length == ORIGINAL.wordLength) {
-      const response = ORIGINAL.makeGuess(currentWord.toLowerCase());
+    if (currentWord.length == game.wordLength) {
+      const response = game.makeGuess(currentWord.toLowerCase());
 
       if (!response.invalidGuess) {
         disableInput();
@@ -89,7 +95,7 @@
   function tryAddingLetter(letter: string) {
     if (
       /^[A-Z]$/.test(letter) &&
-      currentWord.length < ORIGINAL.wordLength &&
+      currentWord.length < game.wordLength &&
       !isInputDisabled
     ) {
       currentWord += letter;
@@ -137,8 +143,6 @@
   });
 </script>
 
-<h1>Game</h1>
-
 <div id="game">
   <!-- filled guess -->
   {#each game.guesses as guess}
@@ -154,7 +158,18 @@
   {#each Array(Math.max(0, game.maxGuesses - game.guesses.length - 1)) as _}
     <Guess />
   {/each}
+
+  <Keyboard
+    {letterColorMap}
+    {tryAddingLetter}
+    {tryDeletingLetter}
+    tryGuessingWord={tryEnteringGuess}
+  />
 </div>
 
 <style>
+  #game {
+    padding: 8px;
+    font-size: 1.2rem;
+  }
 </style>

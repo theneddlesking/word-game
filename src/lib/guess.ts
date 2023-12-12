@@ -1,4 +1,4 @@
-export type WordColors = "green" | "yellow" | "gray" | "white" | "empty";
+export type WordColor = "green" | "yellow" | "gray" | "white" | "empty";
 
 export default class Guess {
   word: string;
@@ -11,5 +11,5 @@ export default class Guess {
 }
 
 export interface GuessDetails {
-  colors: WordColors[];
+  colors: WordColor[];
 }

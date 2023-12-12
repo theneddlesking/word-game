@@ -1,4 +1,4 @@
-import Guess, { type GuessDetails } from "./guess";
+import Guess, { type GuessDetails, type WordColor } from "./guess";
 import { VALID_WORDS } from "./words";
 
 export type GuessResponse = {
@@ -9,6 +9,10 @@ export type GuessResponse = {
   guess: string;
 };
 
+export type LetterColorMap = {
+  [letter: string]: WordColor;
+};
+
 export default class Game {
   answer: string;
   guesses: Guess[];
@@ -16,6 +20,7 @@ export default class Game {
   validWords: string[];
   gameWon: boolean;
   wordLength: number;
+  letterColorMap: LetterColorMap;
   isValidGuess: (guess: string) => boolean;
   getGuessDetails: (guess: string, target: string) => GuessDetails;
 
@@ -34,6 +39,7 @@ export default class Game {
     this.getGuessDetails = getGuessDetails;
     this.isValidGuess = isValidGuess;
 
+    this.letterColorMap = {};
     this.wordLength = 5;
   }
 
@@ -57,6 +63,27 @@ export default class Game {
 
     // add the current guess
     this.guesses.push(new Guess(word, response));
+
+    // add letters to used letters set
+    for (let i = 0; i < word.length; i++) {
+      // prioritise green > yellow > red
+
+      const color = response.colors[i];
+      const currentColor = this.letterColorMap[word[i]];
+
+      // never overwrite green
+      if (currentColor === "green") {
+        continue;
+      }
+
+      // never overwrite yellow with gray
+      if (currentColor === "yellow" && color === "gray") {
+        continue;
+      }
+
+      // anything else is fine
+      this.letterColorMap[word[i]] = color;
+    }
 
     if (word === this.answer) {
       this.gameWon = true;
