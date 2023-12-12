@@ -1,7 +1,6 @@
 import Game from "./game";
 import type { WordColors } from "./guess";
 
-// still bugged answer: HELLO, guess : LOLLY yields Yellow Yellow Green Green Gray
 export const ORIGINAL = new Game("hello", (guess: string, target: string) => {
   const colors: WordColors[] = [];
 

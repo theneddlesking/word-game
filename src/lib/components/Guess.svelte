@@ -8,10 +8,41 @@
       colors: ["empty", "empty", "empty", "empty", "empty"],
     },
   };
+
+  export let isShaking = false;
+
+  $: if (isShaking) {
+    const element = document.getElementById("guess-container");
+    if (element) {
+      element.addEventListener("animationend", () => {
+        isShaking = false;
+      });
+    }
+  }
 </script>
 
-<div>
+<div id="guess-container" class:shake={isShaking}>
   {#each guess.word as letter, i}
     <Cell {letter} color={guess.details.colors[i]} flipDelay={i * 0.25} />
   {/each}
 </div>
+
+<style>
+  .shake {
+    animation: shake 0.5s;
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25%,
+    75% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+  }
+</style>

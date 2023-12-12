@@ -6,11 +6,13 @@
 
   let isInputDisabled = false;
 
-  function disableInputForTwoSeconds() {
+  let isShaking = false;
+
+  function disableInput(delay = 1500) {
     isInputDisabled = true;
     setTimeout(() => {
       isInputDisabled = false;
-    }, 1500);
+    }, delay);
   }
 
   let currentWord = "";
@@ -36,10 +38,18 @@
     }
   }
 
+  let timeout: ReturnType<typeof setTimeout> | undefined;
   function handleInvalidGuess(response: GuessResponse) {
-    console.log("Invalid guess");
+    isShaking = true;
 
-    // TODO: shake the guess
+    disableInput(2000);
+
+    if (!timeout) {
+      timeout = setTimeout(() => {
+        isShaking = false;
+        timeout = undefined;
+      }, 1500);
+    }
   }
 
   function handleResponse(response: GuessResponse) {
@@ -61,10 +71,10 @@
     if (currentWord.length == ORIGINAL.wordLength) {
       const response = ORIGINAL.makeGuess(currentWord.toLowerCase());
 
-      disableInputForTwoSeconds();
-
-      // TODO: only clear if the guess was valid
-      currentWord = "";
+      if (!response.invalidGuess) {
+        disableInput();
+        currentWord = "";
+      }
 
       handleResponse(response);
     }
@@ -95,11 +105,6 @@
       return;
     }
 
-    if (key == "ENTER") {
-      tryEnteringGuess();
-      return;
-    }
-
     if (game.guesses.length == game.maxGuesses || game.gameWon) {
       return;
     }
@@ -107,9 +112,28 @@
     tryAddingLetter(key);
   }
 
+  function handleKeyUp(event: KeyboardEvent) {
+    const key = event.key.toUpperCase();
+
+    if (isInputDisabled) {
+      return;
+    }
+
+    if (key != "ENTER") {
+      return;
+    }
+
+    if (game.guesses.length == game.maxGuesses || game.gameWon) {
+      return;
+    }
+
+    tryEnteringGuess();
+  }
+
   // listen for key inputs
   onMount(() => {
     window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
   });
 </script>
 
@@ -123,7 +147,7 @@
 
   <!-- current guess -->
   {#if game.guesses.length != game.maxGuesses}
-    <Guess guess={currentGuess} />
+    <Guess guess={currentGuess} bind:isShaking />
   {/if}
 
   <!-- empty guesses -->
