@@ -24,6 +24,9 @@
   }
 </script>
 
+<!-- NOTE: There is already a keyboard handler for these keys -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   style="--tile-color: {convertColor(color)};"
   class="cell {color === 'empty' ? 'border-light' : ''} {color === 'white'
