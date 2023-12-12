@@ -2,53 +2,68 @@
   import { onMount } from "svelte";
   import type { GuessResponse } from "../game";
   import { ORIGINAL } from "../original";
+  import Guess from "./Guess.svelte";
 
-  let guess = "";
+  let currentWord = "";
+
+  $: currentColors = Array.from(currentWord.padEnd(5, " ")).map((letter) =>
+    letter === " " ? "empty" : "gray"
+  );
+
+  $: currentGuess = {
+    word: currentWord.padEnd(5, " "),
+    details: {
+      colors: currentColors,
+    },
+  };
+
+  let game = ORIGINAL;
 
   function handleGameOver(response: GuessResponse) {
     if (response.gameWon) {
-      alert("You won!");
+      console.log("You won!");
     } else {
-      alert("You lost!");
+      console.log("You lost!");
     }
   }
 
   function handleInvalidGuess(response: GuessResponse) {
-    alert("Invalid guess");
+    console.log("Invalid guess");
   }
 
   function handleResponse(response: GuessResponse) {
+    // update the game state
+    game = game;
+
     // invalid guess
     if (response.invalidGuess) {
       handleInvalidGuess(response);
-      return;
     }
 
     // game ends
     if (response.gameOver) {
       handleGameOver(response);
-      return;
     }
   }
 
   function tryEnteringGuess() {
-    if (guess.length == ORIGINAL.wordLength) {
-      const response = ORIGINAL.makeGuess(guess.toLowerCase());
+    if (currentWord.length == ORIGINAL.wordLength) {
+      const response = ORIGINAL.makeGuess(currentWord.toLowerCase());
       handleResponse(response);
 
-      guess = "";
+      currentWord = "";
     }
   }
 
   function tryDeletingLetter() {
-    if (guess.length > 0) {
-      guess = guess.slice(0, -1);
+    if (currentWord.length > 0) {
+      currentWord = currentWord.slice(0, -1);
     }
   }
 
   function tryAddingLetter(letter: string) {
-    if (/^[A-Z]$/.test(letter) && guess.length < ORIGINAL.wordLength) {
-      guess += letter;
+    if (/^[A-Z]$/.test(letter) && currentWord.length < ORIGINAL.wordLength) {
+      currentWord += letter;
     }
   }
 
@@ -69,8 +84,6 @@
     tryAddingLetter(key);
   }
 
-  $: displayWord = guess.split("").join(" ");
-
   // listen for key inputs
   onMount(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -79,4 +92,20 @@
 
 <h1>Game</h1>
 
-<div id="wordContainer">{displayWord}</div>
+<div id="game">
+  <!-- filled guess -->
+  {#each game.guesses as guess}
+    <Guess {guess} />
+  {/each}
+
+  <!-- current guess -->
+  <Guess guess={currentGuess} />
+
+  <!-- empty guesses -->
+  {#each Array(game.maxGuesses - game.guesses.length - 1) as _}
+    <Guess />
+  {/each}
+</div>
+
+<style>
+</style>

@@ -1,7 +1,8 @@
 import Game from "./game";
+import type { WordColors } from "./guess";
 
 export const ORIGINAL = new Game("hello", (guess: string, target: string) => {
-  const colors = [];
+  const colors: WordColors[] = [];
 
   // track indices of correctly guessed letters in the target
   const correctIndices = new Set();
