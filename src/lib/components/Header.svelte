@@ -2,7 +2,7 @@
 </script>
 
 <header>
-  <h1>Word Game</h1>
+  <h1>Brutle</h1>
 </header>
 
 <style>

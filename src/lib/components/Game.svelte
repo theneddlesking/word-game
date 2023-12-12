@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { VALID_ANSWERS } from "../answers";
   import type { GuessResponse } from "../game";
-  import { ORIGINAL_VALIDATION_FUNC } from "../games/original";
+  import { BAIT_VALIDATION_FUNC } from "../games/brutle";
   import { getGame } from "../getGame";
   import Guess from "./Guess.svelte";
   import Keyboard from "./Keyboard.svelte";
@@ -34,7 +34,8 @@
     },
   };
 
-  let game = getGame(VALID_ANSWERS[0], ORIGINAL_VALIDATION_FUNC);
+  // loads game from local storage or creates a new one
+  let game = getGame(VALID_ANSWERS[0], BAIT_VALIDATION_FUNC);
 
   let letterColorMap = game.letterColorMap;
 

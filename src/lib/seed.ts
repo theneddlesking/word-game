@@ -1,1 +1,1 @@
-export const SEED = 23123487;
+export const SEED = 23123467;
