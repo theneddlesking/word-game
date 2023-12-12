@@ -98,7 +98,34 @@ export default class Game {
     };
   }
 
+  load(data: string) {
+    const parsedData = JSON.parse(data);
+
+    this.answer = parsedData.answer;
+    this.guesses = parsedData.guesses.map(
+      (guess: { word: string; details: GuessDetails }) =>
+        new Guess(guess.word, guess.details)
+    );
+    this.maxGuesses = parsedData.maxGuesses;
+    this.validWords = parsedData.validWords;
+    this.gameWon = parsedData.gameWon;
+    this.wordLength = parsedData.wordLength;
+    this.letterColorMap = parsedData.letterColorMap;
+  }
+
   getNumberOfGuesses() {
     return this.guesses.length;
+  }
+
+  stringify() {
+    return JSON.stringify({
+      answer: this.answer,
+      guesses: this.guesses,
+      maxGuesses: this.maxGuesses,
+      validWords: this.validWords,
+      gameWon: this.gameWon,
+      wordLength: this.wordLength,
+      letterColorMap: this.letterColorMap,
+    });
   }
 }

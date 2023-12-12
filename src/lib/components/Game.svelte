@@ -2,8 +2,8 @@
   import { onMount } from "svelte";
   import { VALID_ANSWERS } from "../answers";
   import type { GuessResponse } from "../game";
-  import Game from "../game";
-  import { ORIGINAL_VALIDATION_FUNC } from "../original";
+  import { ORIGINAL_VALIDATION_FUNC } from "../games/original";
+  import { getGame } from "../getGame";
   import Guess from "./Guess.svelte";
   import Keyboard from "./Keyboard.svelte";
 
@@ -34,7 +34,7 @@
     },
   };
 
-  let game = new Game(VALID_ANSWERS[0], ORIGINAL_VALIDATION_FUNC);
+  let game = getGame(VALID_ANSWERS[0], ORIGINAL_VALIDATION_FUNC);
 
   let letterColorMap = game.letterColorMap;
 
@@ -73,6 +73,9 @@
 
     // update the game state
     game = game;
+
+    // save to local storage
+    localStorage.setItem("game", JSON.stringify(game));
   }
 
   function tryEnteringGuess() {

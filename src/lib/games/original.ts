@@ -1,4 +1,4 @@
-import type { WordColor } from "./guess";
+import type { WordColor } from "../guess";
 
 export const ORIGINAL_VALIDATION_FUNC = (guess: string, target: string) => {
   const colors: WordColor[] = [];
