@@ -9,7 +9,7 @@
   export let tryGuessingWord: () => void;
 </script>
 
-<div>
+<div id="keyboard">
   <KeyRow>
     <Key key="Q" {letterColorMap} clickHandler={tryAddingLetter} />
     <Key key="W" {letterColorMap} clickHandler={tryAddingLetter} />
@@ -45,3 +45,9 @@
     <Key key="Delete" {letterColorMap} clickHandler={tryDeletingLetter} />
   </KeyRow>
 </div>
+
+<style>
+  #keyboard {
+    margin-top: 1em;
+  }
+</style>

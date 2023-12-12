@@ -165,12 +165,14 @@
     <Guess />
   {/each}
 
-  <Keyboard
-    {letterColorMap}
-    {tryAddingLetter}
-    {tryDeletingLetter}
-    tryGuessingWord={tryEnteringGuess}
-  />
+  <div id="keyboard-container">
+    <Keyboard
+      {letterColorMap}
+      {tryAddingLetter}
+      {tryDeletingLetter}
+      tryGuessingWord={tryEnteringGuess}
+    />
+  </div>
 </div>
 
 <style>
