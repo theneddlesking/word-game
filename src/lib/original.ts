@@ -1,7 +1,6 @@
-import Game from "./game";
 import type { WordColor } from "./guess";
 
-export const ORIGINAL = new Game("hello", (guess: string, target: string) => {
+export const ORIGINAL_VALIDATION_FUNC = (guess: string, target: string) => {
   const colors: WordColor[] = [];
 
   // track indices of correctly guessed letters in the target
@@ -47,4 +46,4 @@ export const ORIGINAL = new Game("hello", (guess: string, target: string) => {
   }
 
   return { colors };
-});
+};

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { VALID_ANSWERS } from "../answers";
   import type { GuessResponse } from "../game";
-  import { ORIGINAL } from "../original";
+  import Game from "../game";
+  import { ORIGINAL_VALIDATION_FUNC } from "../original";
   import Guess from "./Guess.svelte";
   import Keyboard from "./Keyboard.svelte";
 
@@ -32,7 +34,7 @@
     },
   };
 
-  let game = ORIGINAL;
+  let game = new Game(VALID_ANSWERS[0], ORIGINAL_VALIDATION_FUNC);
 
   let letterColorMap = game.letterColorMap;
 
