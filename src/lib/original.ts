@@ -1,17 +1,29 @@
 import Game from "./game";
 import type { WordColors } from "./guess";
 
+// still bugged answer: HELLO, guess : LOLLY yields Yellow Yellow Green Green Gray
 export const ORIGINAL = new Game("hello", (guess: string, target: string) => {
   const colors: WordColors[] = [];
 
   // track indices of correctly guessed letters in the target
-  const correctIndices = new Set();
+  const correctIndicies = new Set();
+
+  // get count of each letter remaining
+  const targetLetterCounts = target.split("").reduce((acc, letter) => {
+    acc[letter] = acc[letter] ? acc[letter] + 1 : 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  console.log(targetLetterCounts);
 
   // check for correct letters in the correct position (green)
   for (let i = 0; i < guess.length; i++) {
     if (guess[i] === target[i]) {
       colors[i] = "green";
-      correctIndices.add(i);
+      correctIndicies.add(i);
+
+      // prevent double counting of colors
+      targetLetterCounts[guess[i]] -= 1;
     }
   }
 
@@ -20,16 +32,19 @@ export const ORIGINAL = new Game("hello", (guess: string, target: string) => {
     if (
       guess[i] !== target[i] &&
       target.includes(guess[i]) &&
-      !correctIndices.has(i)
+      targetLetterCounts[guess[i]] > 0
     ) {
       colors[i] = "yellow";
-      correctIndices.add(i);
+      correctIndicies.add(i);
+
+      // prevent double counting of colors
+      targetLetterCounts[guess[i]] -= 1;
     }
   }
 
   // fill the remaining slots with incorrect (gray)
   for (let i = 0; i < guess.length; i++) {
-    if (!correctIndices.has(i)) {
+    if (!correctIndicies.has(i)) {
       colors[i] = "gray";
     }
   }

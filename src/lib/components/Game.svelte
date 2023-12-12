@@ -32,9 +32,6 @@
   }
 
   function handleResponse(response: GuessResponse) {
-    // update the game state
-    game = game;
-
     // invalid guess
     if (response.invalidGuess) {
       handleInvalidGuess(response);
@@ -44,14 +41,16 @@
     if (response.gameOver) {
       handleGameOver(response);
     }
+
+    // update the game state
+    game = game;
   }
 
   function tryEnteringGuess() {
     if (currentWord.length == ORIGINAL.wordLength) {
       const response = ORIGINAL.makeGuess(currentWord.toLowerCase());
-      handleResponse(response);
-
       currentWord = "";
+      handleResponse(response);
     }
   }
 
@@ -81,6 +80,10 @@
       return;
     }
 
+    if (game.guesses.length == game.maxGuesses || game.gameWon) {
+      return;
+    }
+
     tryAddingLetter(key);
   }
 
@@ -102,7 +105,7 @@
   <Guess guess={currentGuess} />
 
   <!-- empty guesses -->
-  {#each Array(game.maxGuesses - game.guesses.length - 1) as _}
+  {#each Array(Math.max(0, game.maxGuesses - game.guesses.length - 1)) as _}
     <Guess />
   {/each}
 </div>
