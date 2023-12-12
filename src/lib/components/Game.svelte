@@ -99,6 +99,10 @@
   }
 
   function tryAddingLetter(letter: string) {
+    if (game.guesses.length == game.maxGuesses || game.gameWon) {
+      return;
+    }
+
     if (
       /^[A-Z]$/.test(letter) &&
       currentWord.length < game.wordLength &&
@@ -114,10 +118,6 @@
 
     if (key == "BACKSPACE") {
       tryDeletingLetter();
-      return;
-    }
-
-    if (game.guesses.length == game.maxGuesses || game.gameWon) {
       return;
     }
 

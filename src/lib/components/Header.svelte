@@ -13,5 +13,6 @@
     font-family: "Arial", sans-serif;
     font-size: 1.5rem;
     font-weight: bold;
+    color: black;
   }
 </style>
