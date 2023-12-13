@@ -4,6 +4,8 @@
   export let letter: string;
   export let color: WordColor;
   export let flipDelay: number;
+  export let isWin = false;
+  export let winDelay: number;
 
   let cell: HTMLDivElement;
 
@@ -16,15 +18,20 @@
       white: "#ffffff",
     };
 
-    return map[color];
+    return isWin ? map["green"] : map[color];
   }
 </script>
 
 <div
-  style="--tile-color: {convertColor(color)}; --flip-delay: {flipDelay}s;"
-  class="test cell {color === 'empty' ? 'border-light' : ''} {color === 'white'
+  style="--tile-color: {convertColor(
+    color
+  )}; --flip-delay: {flipDelay}s; --win-delay: {winDelay}s"
+  class="cell {color === 'empty' && !isWin ? 'border-light' : ''} {color ===
+    'white' && !isWin
     ? 'border-dark'
-    : ''} {color !== 'empty' && color !== 'white' ? 'border-light flip' : ''}"
+    : ''} {color !== 'empty' && color !== 'white'
+    ? 'border-light flip'
+    : ''} {isWin ? 'win-animation' : ''}"
   bind:this={cell}
 >
   {letter.toUpperCase()}
@@ -62,10 +69,23 @@
     animation-delay: calc(var(--flip-delay));
   }
 
-  .test {
-    color: #13560f;
-    color: #fd9b08;
-    color: #000000;
+  .win-animation {
+    background-color: var(--tile-color);
+    color: white;
+    animation: cellWinAnimation 0.5s ease-in-out;
+    animation-delay: calc(var(--win-delay));
+  }
+
+  @keyframes cellWinAnimation {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 
   @keyframes pulse {

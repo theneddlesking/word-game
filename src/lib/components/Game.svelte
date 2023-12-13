@@ -4,12 +4,18 @@
   import type { GuessResponse } from "../game";
   import { BAIT_VALIDATION_FUNC } from "../games/brutle";
   import { getGame } from "../getGame";
+  import { addGameToUserData, saveUserData, type UserData } from "../userData";
   import Guess from "./Guess.svelte";
   import Keyboard from "./Keyboard.svelte";
+
+  export let userData: UserData;
+  export let showStats: boolean;
+  export let dialogIsOpen: boolean;
 
   let isInputDisabled = false;
 
   let isShaking = false;
+  let isWinAnimation = false;
 
   function disableInput(delay = 1500) {
     isInputDisabled = true;
@@ -40,11 +46,25 @@
   let letterColorMap = game.letterColorMap;
 
   function handleGameOver(response: GuessResponse) {
-    if (response.gameWon) {
-      console.log("You won!");
-    } else {
-      console.log("You lost!");
-    }
+    // update user data
+    userData = addGameToUserData(userData, game);
+
+    // save user data
+    saveUserData(userData);
+
+    setTimeout(() => {
+      if (response.gameWon) {
+        // do the animation if you won
+        isWinAnimation = true;
+      } else {
+        // reveal the answer
+      }
+
+      // show stats screen
+      setTimeout(() => {
+        showStats = true;
+      }, 2000);
+    }, 2500);
   }
 
   let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -80,7 +100,7 @@
   }
 
   function tryEnteringGuess() {
-    if (currentWord.length == game.wordLength) {
+    if (currentWord.length == game.wordLength && !dialogIsOpen) {
       const response = game.makeGuess(currentWord.toLowerCase());
 
       if (!response.invalidGuess) {
@@ -93,13 +113,17 @@
   }
 
   function tryDeletingLetter() {
-    if (currentWord.length > 0) {
+    if (currentWord.length > 0 && !dialogIsOpen) {
       currentWord = currentWord.slice(0, -1);
     }
   }
 
   function tryAddingLetter(letter: string) {
-    if (game.guesses.length == game.maxGuesses || game.gameWon) {
+    if (
+      game.guesses.length == game.maxGuesses ||
+      game.gameWon ||
+      dialogIsOpen
+    ) {
       return;
     }
 
@@ -152,8 +176,10 @@
 <div id="game">
   <div id="guesses">
     <!-- filled guess -->
-    {#each game.guesses as guess}
-      <Guess {guess} />
+
+    {#each game.guesses as guess, i}
+      <!-- not last guess -->
+      <Guess {guess} isWin={isWinAnimation && i == game.guesses.length - 1} />
     {/each}
 
     <!-- current guess -->

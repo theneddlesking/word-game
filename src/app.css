@@ -30,4 +30,32 @@ video {
 
 #app {
   height: 100vh;
+  font-family: "Arial", sans-serif;
+}
+
+button {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+button:hover {
+  background-color: rgb(104, 103, 103);
+  color: white;
+  cursor: pointer;
+}
+
+/* disable user zooming */
+body {
+  touch-action: manipulation;
+}
+
+/* disable pinch zooming on iOS */
+@media (max-width: 767px) {
+  body {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
 }
