@@ -181,7 +181,7 @@
   #game {
     padding: 8px;
     font-size: 1.2rem;
-    min-height: 90vh;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
