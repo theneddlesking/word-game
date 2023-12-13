@@ -15,7 +15,6 @@
     top: 25vh;
     left: calc(50vw - 150px);
     width: 300px;
-    height: 50vh;
     z-index: 100;
     padding: 10px;
     border: 2px solid #ccc;

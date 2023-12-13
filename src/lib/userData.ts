@@ -21,9 +21,9 @@ export function addGameToUserData(userData: UserData, game: WordGame) {
   const newCurrentStreak = gameWon ? currentStreak + 1 : 0;
   const newLongestStreak = Math.max(longestStreak, newCurrentStreak);
 
-  const newWinPercentage =
-    Math.round(newScores.filter((score) => score <= 6).length / newPlayed) *
-    100;
+  const newWinPercentage = Math.round(
+    (100 * newScores.filter((score) => score <= 6).length) / newScores.length
+  );
 
   return {
     scores: newScores,

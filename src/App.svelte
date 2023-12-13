@@ -3,20 +3,61 @@
   import Game from "./lib/components/Game.svelte";
   import Header from "./lib/components/Header.svelte";
   import HeaderButton from "./lib/components/HeaderButton.svelte";
+  import ScoreBar from "./lib/components/ScoreBar.svelte";
   import type WordGame from "./lib/game";
   import { getGameForToday } from "./lib/getGame";
-  import { getUserData, type UserData } from "./lib/userData";
+  import { getUserData, type Score } from "./lib/userData";
 
-  let userData: UserData = getUserData();
+  let userData = getUserData();
   let game: WordGame = getGameForToday();
 
+  let gameOver = game.gameWon || game.guesses.length == game.maxGuesses;
+
   // type cast to boolean
-  let rulesDialogOpen = !game.gameWon;
-  let statsDialogOpen = !!game.gameWon;
+  let rulesDialogOpen = !gameOver;
+  let statsDialogOpen = gameOver;
 
   $: dialogIsOpen = rulesDialogOpen || statsDialogOpen;
 
   let rules = game.rules;
+
+  function getScoreFrequencyMap(arr: Score[]) {
+    const frequencyMap: Record<string, number> = {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+    };
+
+    arr.forEach((element: Score) => {
+      frequencyMap[element.toString()] =
+        (frequencyMap[element.toString()] || 0) + 1;
+    });
+
+    return frequencyMap;
+  }
+
+  function findMostCommonElement(frequencyMap: Record<string, number>) {
+    let mostCommonElement = "";
+    let maxFrequency = 0;
+
+    for (const element in frequencyMap) {
+      if (frequencyMap[element] > maxFrequency) {
+        maxFrequency = frequencyMap[element];
+        mostCommonElement = element;
+      }
+    }
+
+    return mostCommonElement;
+  }
+
+  // update whenever dialog is opened
+  $: frequencyMap = dialogIsOpen ? getScoreFrequencyMap(userData.scores) : {};
+  $: mostCommonScore = parseInt(findMostCommonElement(frequencyMap)) || 0;
+  $: scores = Object.keys(frequencyMap);
 </script>
 
 <Header />
@@ -70,6 +111,14 @@
   <p>
     <br />
     <strong>Scores</strong>
+
+    {#each scores as score}
+      <ScoreBar
+        score={parseInt(score)}
+        count={frequencyMap[score]}
+        highest={mostCommonScore}
+      />
+    {/each}
   </p>
   <div>
     <!-- render each number of wins -->
