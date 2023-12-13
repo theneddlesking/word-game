@@ -15,6 +15,7 @@ export type LetterColorMap = {
 
 export default class WordGame {
   answer: string;
+  rules: string;
   guesses: Guess[];
   maxGuesses: number;
   validWords: string[];
@@ -27,6 +28,7 @@ export default class WordGame {
   constructor(
     answer: string,
     getGuessDetails: (guess: string, target: string) => GuessDetails,
+    rules: string,
     isValidGuess: (guess: string) => boolean = (guess: string) =>
       this.validWords.includes(guess),
     validWords: string[] = VALID_WORDS
@@ -38,6 +40,7 @@ export default class WordGame {
     this.gameWon = false;
     this.getGuessDetails = getGuessDetails;
     this.isValidGuess = isValidGuess;
+    this.rules = rules;
 
     this.letterColorMap = {};
     this.wordLength = 5;

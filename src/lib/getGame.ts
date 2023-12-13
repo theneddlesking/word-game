@@ -1,6 +1,8 @@
 import { VALID_ANSWERS } from "./answers";
 import WordGame from "./game";
 import { BAIT_VALIDATION_FUNC } from "./games/brutle";
+import { COUNT_VALIDATION_FUNC } from "./games/countle";
+import type { WordColor } from "./guess";
 
 function daysBetweenDates(date1: Date, date2: Date) {
   // set the time components of both dates to midnight
@@ -12,12 +14,28 @@ function daysBetweenDates(date1: Date, date2: Date) {
 
   let differenceMs = Math.abs(date2Ms - date1Ms);
 
-  return Math.ceil(differenceMs / (1000 * 60 * 60 * 24));
+  return Math.max(Math.ceil(differenceMs / (1000 * 60 * 60 * 24)), 0);
 }
 
-function getValidationFuncFromIndex(index: number) {
-  const validationFuncs = [BAIT_VALIDATION_FUNC];
-  return validationFuncs[index % validationFuncs.length];
+type GameData = {
+  validationFunc: (guess: string, target: string) => { colors: WordColor[] };
+  rules: string;
+};
+
+function getGameData(index: number) {
+  const games: GameData[] = [
+    {
+      validationFunc: BAIT_VALIDATION_FUNC,
+      rules:
+        "each guess has one incorrect piece of information except if you guessed the word correctly.",
+    },
+    {
+      validationFunc: COUNT_VALIDATION_FUNC,
+      rules:
+        "each guess only reveals the number of each colour not their positions.",
+    },
+  ];
+  return games[index % games.length];
 }
 export function getGameForToday() {
   const answerIndex =
@@ -25,10 +43,9 @@ export function getGameForToday() {
 
   const gameData = loadGameFromLocalStorage();
 
-  const game = new WordGame(
-    VALID_ANSWERS[answerIndex],
-    getValidationFuncFromIndex(answerIndex)
-  );
+  const { validationFunc, rules } = getGameData(answerIndex);
+
+  const game = new WordGame(VALID_ANSWERS[answerIndex], validationFunc, rules);
 
   const currentAnswer = JSON.parse(gameData!)?.answer;
 

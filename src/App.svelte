@@ -16,8 +16,7 @@
 
   $: dialogIsOpen = rulesDialogOpen || statsDialogOpen;
 
-  let rules =
-    "each guess has one incorrect piece of information except if you guessed the word correctly.";
+  let rules = game.rules;
 </script>
 
 <Header />
