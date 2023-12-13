@@ -4,15 +4,15 @@
   import Header from "./lib/components/Header.svelte";
   import HeaderButton from "./lib/components/HeaderButton.svelte";
   import type WordGame from "./lib/game";
-  import { BAIT_VALIDATION_FUNC } from "./lib/games/brutle";
   import { getGameForToday } from "./lib/getGame";
   import { getUserData, type UserData } from "./lib/userData";
 
   let userData: UserData = getUserData();
-  let game: WordGame = getGameForToday(0, BAIT_VALIDATION_FUNC);
+  let game: WordGame = getGameForToday();
 
+  // type cast to boolean
   let rulesDialogOpen = !game.gameWon;
-  let statsDialogOpen = game.gameWon;
+  let statsDialogOpen = !!game.gameWon;
 
   $: dialogIsOpen = rulesDialogOpen || statsDialogOpen;
 
@@ -92,6 +92,7 @@
     top: 0;
     left: 0;
     padding: 15px;
+    color: black;
   }
 
   #rules {
