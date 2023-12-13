@@ -150,20 +150,22 @@
 </script>
 
 <div id="game">
-  <!-- filled guess -->
-  {#each game.guesses as guess}
-    <Guess {guess} />
-  {/each}
+  <div id="guesses">
+    <!-- filled guess -->
+    {#each game.guesses as guess}
+      <Guess {guess} />
+    {/each}
 
-  <!-- current guess -->
-  {#if game.guesses.length != game.maxGuesses}
-    <Guess guess={currentGuess} bind:isShaking />
-  {/if}
+    <!-- current guess -->
+    {#if game.guesses.length != game.maxGuesses}
+      <Guess guess={currentGuess} bind:isShaking />
+    {/if}
 
-  <!-- empty guesses -->
-  {#each Array(Math.max(0, game.maxGuesses - game.guesses.length - 1)) as _}
-    <Guess />
-  {/each}
+    <!-- empty guesses -->
+    {#each Array(Math.max(0, game.maxGuesses - game.guesses.length - 1)) as _}
+      <Guess />
+    {/each}
+  </div>
 
   <div id="keyboard-container">
     <Keyboard
@@ -179,5 +181,9 @@
   #game {
     padding: 8px;
     font-size: 1.2rem;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 </style>

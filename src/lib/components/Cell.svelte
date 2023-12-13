@@ -9,10 +9,10 @@
 
   function convertColor(color: WordColor) {
     const map = {
-      green: "#6aaa64",
-      yellow: "#c9b458",
-      gray: "#787c7e",
-      empty: "#787c7e",
+      green: "#13560f",
+      yellow: "#fd9b08",
+      gray: "#000000",
+      empty: "#ffffff",
       white: "#ffffff",
     };
 
@@ -22,7 +22,7 @@
 
 <div
   style="--tile-color: {convertColor(color)}; --flip-delay: {flipDelay}s;"
-  class="cell {color === 'empty' ? 'border-light' : ''} {color === 'white'
+  class="test cell {color === 'empty' ? 'border-light' : ''} {color === 'white'
     ? 'border-dark'
     : ''} {color !== 'empty' && color !== 'white' ? 'border-light flip' : ''}"
   bind:this={cell}
@@ -46,13 +46,13 @@
   }
 
   .border-light {
-    border: 1px solid #d3d6da;
+    border: 1px solid rgb(204, 199, 199);
     color: black;
   }
 
   .border-dark {
     transition: border-color 0.15s ease;
-    border: 1px solid #6a737d;
+    border: 1.5px solid #727a83;
     color: black;
     animation: pulse 0.2s;
   }
@@ -60,6 +60,12 @@
   .flip {
     animation: flipSequence 0.5s ease forwards;
     animation-delay: calc(var(--flip-delay));
+  }
+
+  .test {
+    color: #13560f;
+    color: #fd9b08;
+    color: #000000;
   }
 
   @keyframes pulse {

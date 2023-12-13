@@ -13,9 +13,9 @@
   // slightly different
   function convertColor(color: WordColor) {
     const map = {
-      green: "#6aaa64",
-      yellow: "#c9b458",
-      gray: "#787c7e",
+      green: "#13560f",
+      yellow: "#fd9b08",
+      gray: "#000000",
       empty: "lightgray",
       white: "#ffffff",
     };

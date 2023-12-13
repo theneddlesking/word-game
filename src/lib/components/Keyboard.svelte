@@ -49,5 +49,6 @@
 <style>
   #keyboard {
     margin-top: 1em;
+    align-self: flex-end;
   }
 </style>

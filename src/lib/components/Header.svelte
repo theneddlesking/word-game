@@ -14,5 +14,6 @@
     font-size: 1.5rem;
     font-weight: bold;
     color: black;
+    max-height: 10vh;
   }
 </style>
