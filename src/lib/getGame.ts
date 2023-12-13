@@ -39,7 +39,7 @@ function getGameData(index: number) {
 }
 export function getGameForToday() {
   const answerIndex =
-    daysBetweenDates(new Date("2023-12-12"), new Date()) % VALID_ANSWERS.length;
+    daysBetweenDates(new Date("2023-12-13"), new Date()) % VALID_ANSWERS.length;
 
   const gameData = loadGameFromLocalStorage();
 

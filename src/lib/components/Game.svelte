@@ -14,6 +14,7 @@
 
   let isShaking = false;
   let isWinAnimation = false;
+  let showWord = false;
 
   function disableInput(delay = 1500) {
     isInputDisabled = true;
@@ -54,14 +55,20 @@
       if (response.gameWon) {
         // do the animation if you won
         isWinAnimation = true;
+
+        // show stats screen
+        setTimeout(() => {
+          showStats = true;
+        }, 2000);
       } else {
         // reveal the answer
-      }
+        showWord = true;
 
-      // show stats screen
-      setTimeout(() => {
-        showStats = true;
-      }, 2000);
+        // show stats screen
+        setTimeout(() => {
+          showStats = true;
+        }, 1000);
+      }
     }, 2500);
   }
 
@@ -191,6 +198,12 @@
     {/each}
   </div>
 
+  {#if showWord}
+    <div id="answer">
+      {game.answer}
+    </div>
+  {/if}
+
   <div id="keyboard-container">
     <Keyboard
       {letterColorMap}
@@ -209,5 +222,19 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+
+  #answer {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    position: absolute;
+    top: 15vh;
+    background-color: white;
+    border: 3px solid gray;
+    padding: 5px;
+    border-radius: 5px;
+    left: calc(50vw - 40px);
   }
 </style>
