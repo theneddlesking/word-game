@@ -5,11 +5,11 @@
   import HeaderButton from "./lib/components/HeaderButton.svelte";
   import type WordGame from "./lib/game";
   import { BAIT_VALIDATION_FUNC } from "./lib/games/brutle";
-  import { getGame } from "./lib/getGame";
+  import { getGameForToday } from "./lib/getGame";
   import { getUserData, type UserData } from "./lib/userData";
 
   let userData: UserData = getUserData();
-  let game: WordGame = getGame(0, BAIT_VALIDATION_FUNC);
+  let game: WordGame = getGameForToday(0, BAIT_VALIDATION_FUNC);
 
   let rulesDialogOpen = !game.gameWon;
   let statsDialogOpen = game.gameWon;
