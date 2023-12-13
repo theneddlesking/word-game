@@ -1,13 +1,14 @@
-import Game from "./game";
+import { VALID_ANSWERS } from "./answers";
+import WordGame from "./game";
 import type { GuessDetails } from "./guess";
 
 export function getGame(
-  answer: string,
+  answerIndex: number,
   validationFunc: (guess: string, target: string) => GuessDetails
 ) {
   const gameData = loadGameFromLocalStorage();
 
-  const game = new Game(answer, validationFunc);
+  const game = new WordGame(VALID_ANSWERS[answerIndex], validationFunc);
 
   if (gameData) {
     game.load(gameData);

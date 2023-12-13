@@ -1,4 +1,4 @@
-import type Game from "./game";
+import type WordGame from "./game";
 
 // 7 is for seven or above
 export type Score = 1 | 2 | 3 | 4 | 5 | 6 | 7;
@@ -11,7 +11,7 @@ export type UserData = {
   longestStreak: number;
 };
 
-export function addGameToUserData(userData: UserData, game: Game) {
+export function addGameToUserData(userData: UserData, game: WordGame) {
   const { scores, currentStreak, longestStreak, played } = userData;
   const { gameWon } = game;
 

@@ -1,9 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { VALID_ANSWERS } from "../answers";
+  import type WordGame from "../game";
   import type { GuessResponse } from "../game";
-  import { BAIT_VALIDATION_FUNC } from "../games/brutle";
-  import { getGame } from "../getGame";
   import { addGameToUserData, saveUserData, type UserData } from "../userData";
   import Guess from "./Guess.svelte";
   import Keyboard from "./Keyboard.svelte";
@@ -41,7 +39,7 @@
   };
 
   // loads game from local storage or creates a new one
-  let game = getGame(VALID_ANSWERS[0], BAIT_VALIDATION_FUNC);
+  export let game: WordGame;
 
   let letterColorMap = game.letterColorMap;
 

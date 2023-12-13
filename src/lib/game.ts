@@ -13,7 +13,7 @@ export type LetterColorMap = {
   [letter: string]: WordColor;
 };
 
-export default class Game {
+export default class WordGame {
   answer: string;
   guesses: Guess[];
   maxGuesses: number;
