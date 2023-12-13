@@ -68,6 +68,11 @@
         setTimeout(() => {
           showStats = true;
         }, 1000);
+
+        // rehide word
+        setTimeout(() => {
+          showWord = false;
+        }, 4000);
       }
     }, 2500);
   }
@@ -200,7 +205,7 @@
 
   {#if showWord}
     <div id="answer">
-      {game.answer}
+      {game.answer.toUpperCase()}
     </div>
   {/if}
 
@@ -235,6 +240,6 @@
     border: 3px solid gray;
     padding: 5px;
     border-radius: 5px;
-    left: calc(50vw - 40px);
+    left: calc(50vw - 45px);
   }
 </style>
